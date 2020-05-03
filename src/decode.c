@@ -287,7 +287,7 @@ decode_R13_R2000 (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
     Dwg_Header *_obj = &dwg->header;
     Bit_Chain *hdl_dat = dat;
     dat->byte = 0x06;
-    // clang-format off
+// clang-format off
     #include "header.spec"
     // clang-format on
   }
@@ -376,7 +376,7 @@ decode_R13_R2000 (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
           size_t old_size = dat->size;
           BITCODE_BL vcount;
           dat->size = end_address;
-          // clang-format off
+// clang-format off
           #include "auxheader.spec"
           // clang-format on
           dat->size = old_size;
@@ -2586,7 +2586,7 @@ summaryinfo_private (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
   Dwg_Object *obj = NULL;
   int error = 0;
 
-  // clang-format off
+// clang-format off
   #include "summaryinfo.spec"
   // clang-format on
 
@@ -2740,7 +2740,7 @@ filedeplist_private (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
   int error = 0;
   BITCODE_BL vcount;
 
-  // clang-format off
+// clang-format off
   #include "filedeplist.spec"
   // clang-format on
 
@@ -2789,7 +2789,7 @@ security_private (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
   int error = 0;
   memset (_obj, 0, sizeof (Dwg_Security));
 
-  // clang-format off
+// clang-format off
   #include "security.spec"
   // clang-format on
 
@@ -2962,7 +2962,7 @@ revhistory_private (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
   Dwg_Object *obj = NULL;
   int error = 0;
 
-  // clang-format off
+// clang-format off
   #include "revhistory.spec"
   // clang-format on
 
@@ -3249,7 +3249,7 @@ decode_R2004_header (Bit_Chain *restrict file_dat, Dwg_Data *restrict dwg)
     dat->bit = 0;
     dat->byte = 0UL;
     LOG_TRACE ("\n#### r2004 File Header ####\n");
-    // clang-format off
+// clang-format off
     #include "r2004_file_header.spec"
     // clang-format on
 
@@ -3471,7 +3471,7 @@ decode_R2007 (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
     Dwg_Object *obj = NULL;
 
     dat->byte = 0x06;
-    // clang-format off
+// clang-format off
     #include "header.spec"
     // clang-format on
   }
@@ -4310,7 +4310,7 @@ dwg_decode_object (Bit_Chain *dat, Bit_Chain *hdl_dat, Bit_Chain *str_dat,
       error |= obj_handle_stream (dat, obj, hdl_dat);
   }
 
-  // clang-format off
+// clang-format off
   #include "common_object_handle_data.spec"
   // clang-format on
 
@@ -4586,7 +4586,7 @@ dwg_decode_header_variables (Bit_Chain *dat, Bit_Chain *hdl_dat,
   Dwg_Object *obj = NULL;
   int error = 0;
 
-  // clang-format off
+// clang-format off
   #include "header_variables.spec"
   // clang-format on
 
@@ -5020,7 +5020,7 @@ dwg_decode_variable_type (Dwg_Data *restrict dwg, Bit_Chain *dat,
   obj->dxfname = klass->dxfname;
   is_entity = dwg_class_is_entity (klass);
 
-  // clang-format off
+// clang-format off
   // global class dispatcher
   #include "classes.inc"
   // clang-format on

@@ -116,6 +116,9 @@ static char *_path_field (const char *path);
 #define RECORD(nam)                                                           \
   KEY (nam);                                                                  \
   HASH
+#define RECORDs(x)                                                            \
+  KEYs (_XSTR (x));                                                           \
+  HASH
 #define ENDRECORD() ENDHASH
 // a named list
 #define SECTION(nam)                                                          \
@@ -1188,7 +1191,7 @@ json_common_entity_data (Bit_Chain *restrict dat,
 
   error |= json_eed (dat, (Dwg_Object_Object *)_ent);
 
-  // clang-format off
+// clang-format off
   #include "common_entity_handle_data.spec"
   #include "common_entity_data.spec"
   // clang-format on
@@ -1206,7 +1209,7 @@ json_common_object_handle_data (Bit_Chain *restrict dat,
   BITCODE_BL vcount = 0;
   _obj = obj->tio.object;
 
-  // clang-format off
+// clang-format off
   #include "common_object_handle_data.spec"
   // clang-format on
   return error;
@@ -1646,7 +1649,7 @@ dwg_json_variable_type (Dwg_Data *restrict dwg, Bit_Chain *restrict dat,
     return DWG_ERR_INTERNALERROR;
   is_entity = dwg_class_is_entity (klass);
 
-  // clang-format off
+// clang-format off
   #include "classes.inc"
   // clang-format on
 
@@ -1927,7 +1930,7 @@ json_fileheader_write (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
   RECORD (FILEHEADER); // single hash
   KEY (version);
   fprintf (dat->fh, "\"%s\"", dwg_version_codes (dwg->header.version));
-  // clang-format off
+// clang-format off
   #include "header.spec"
   // clang-format on
   ENDRECORD ();
@@ -1947,7 +1950,7 @@ json_preR13_header_write_private (Bit_Chain *restrict dat,
   int error = 0;
   const char *codepage = "ANSI_1252";
 
-  // clang-format off
+// clang-format off
   #include "header_variables_r11.spec"
   // clang-format on
   return error;
@@ -1967,7 +1970,7 @@ json_header_write_private (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
         : (dwg->header.version >= R_2007)                         ? "UTF-8"
                                           : "ANSI_1252";
 
-  // clang-format off
+// clang-format off
   #include "header_variables.spec"
   // clang-format on
   return error;

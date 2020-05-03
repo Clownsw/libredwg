@@ -25,7 +25,6 @@
 # error ACTION define missing: decode, encode, dxf, indxf, print, free, ...
 #endif
 
-#define _XSTR(s) _STR(s)
 #define _STR(s)  #s
 
 #define WARN_UNHANDLED_CLASS                                                  \
