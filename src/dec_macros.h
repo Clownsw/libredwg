@@ -74,6 +74,16 @@
               hdl_dat->bit)                                                   \
   LOG (level, "\n")
 
+// DWG src encoding is either codepage or UTF-16
+#define SET_STR(src)                                                          \
+  ({                                                                          \
+    Dwg_String *str = (Dwg_String *)calloc (1, sizeof (Dwg_String));          \
+    str->str = strdup (src);                                                  \
+    str->len = strlen (src);                                                  \
+    str->cp = dwg->header.from_version < R_2007 ? dwg->header.codepage : CP_UTF16;  \
+    str;                                                                      \
+  })
+
 #define VALUE(value, type, dxf)                                               \
   LOG_TRACE (FORMAT_##type " [" #type " %d]\n", (BITCODE_##type)value, dxf)
 #define VALUE_RC(value, dxf) VALUE (value, RC, dxf)
@@ -530,8 +540,9 @@
   {                                                                           \
     /* if (_obj->nam) free (_obj->nam); // preR13 add_Document defaults */    \
     SINCE (R_13b1) { _obj->nam = NULL; VECTOR_CHKCOUNT (nam, TF, len, dat) }  \
-    _obj->nam = (BITCODE_TV)bit_read_TF (dat, (size_t)len);                   \
-    LOG_TRACE (#nam ": \"%s\" [TFv %zu " #dxf "]", _obj->nam, (size_t)len);   \
+    _obj->nam = SET_STR ((char*)bit_read_TF (dat, (size_t)len));              \
+    LOG_TRACE (#nam ": \"%s\" [TFv %lu " #dxf "]", _obj->nam->str,            \
+               (size_t)len);                                                  \
     if (!_obj->nam)                                                           \
       return DWG_ERR_VALUEOUTOFBOUNDS;                                        \
     LOG_INSANE (" @%zu.%u", dat->byte, dat->bit)                              \
