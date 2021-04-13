@@ -130,7 +130,7 @@
   FIELD_RS (ATTMODE, 70);
   DECODER {
     if (FIELD_VALUE (MENU)) // already created by add_Document
-      free (FIELD_VALUE (MENU));
+      FREE (FIELD_VALUE (MENU));
   }
   // cppcheck-suppress doubleFree
   FIELD_TFv (MENU, 15, 1); // optionally extended by MENUEXT below
@@ -162,7 +162,7 @@
   DECODER {    
     if (_obj->MENUEXT[1]) {
       size_t len = strlen ((char*)&_obj->MENUEXT[1]);
-      _obj->MENU = (char*)realloc (_obj->MENU, strlen (_obj->MENU) + len + 1);
+      _obj->MENU = (char*)REALLOC (_obj->MENU, strlen (_obj->MENU) + len + 1);
       strncat (_obj->MENU, (char*)&_obj->MENUEXT[1], len);
       LOG_TRACE ("MENU => \"%s\"\n", _obj->MENU);
     }
@@ -294,7 +294,7 @@
 #ifdef IS_DECODER
   {
     BITCODE_RLL v;
-    _obj->HANDSEED = (BITCODE_H)calloc(1, sizeof(Dwg_Object_Ref));
+    _obj->HANDSEED = (BITCODE_H)CALLOC (1, sizeof (Dwg_Object_Ref));
     _obj->HANDSEED->handleref.code = 0;
     _obj->HANDSEED->handleref.size = 8;
     v = bit_read_RLL (dat);

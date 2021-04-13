@@ -296,7 +296,7 @@ decode_preR13_section (Dwg_Section_Type_r11 id, Bit_Chain *restrict dat,
   if (dwg->num_alloced_objects < dwg->num_objects + tbl->number)
     {
       dwg->num_alloced_objects = dwg->num_objects + tbl->number;
-      dwg->object = (Dwg_Object *)realloc (
+      dwg->object = (Dwg_Object *)REALLOC (
           dwg->object, dwg->num_alloced_objects * sizeof (Dwg_Object));
       dwg->dirty_refs = 1;
     }
@@ -312,11 +312,11 @@ decode_preR13_section (Dwg_Section_Type_r11 id, Bit_Chain *restrict dat,
         if (_ctrl->num_entries != tbl->number)                                \
           {                                                                   \
             if (_ctrl->entries)                                               \
-              _ctrl->entries = (BITCODE_H *)realloc (                         \
+              _ctrl->entries = (BITCODE_H *)REALLOC (                         \
                   _ctrl->entries, tbl->number * sizeof (BITCODE_H));          \
             else                                                              \
               _ctrl->entries                                                  \
-                  = (BITCODE_H *)calloc (tbl->number, sizeof (BITCODE_H));    \
+                  = (BITCODE_H *)CALLOC (tbl->number, sizeof (BITCODE_H));    \
             _ctrl->num_entries = tbl->number;                                 \
             LOG_TRACE (#token "_CONTROL.num_entries = %u\n", tbl->number);    \
           }                                                                   \
@@ -623,8 +623,6 @@ decode_preR13 (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
 
   // setup all the new control objects
   error |= dwg_add_Document (dwg, 0);
-  if (error >= DWG_ERR_CRITICAL)
-    return error;
 
   SINCE (R_2_0b)
   {
@@ -772,7 +770,7 @@ decode_preR13 (Bit_Chain *restrict dat, Dwg_Data *restrict dwg)
       BITCODE_TF unknown = bit_read_TF (dat, len);
       LOG_TRACE ("unknown (%zu):", len);
       LOG_TRACE_TF (unknown, len);
-      free (unknown);
+      FREE (unknown);
     }
 
   if (dwg->dirty_refs)

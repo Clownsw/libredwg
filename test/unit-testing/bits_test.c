@@ -270,7 +270,7 @@ bit_read_RD_tests (void)
   double result;
 
   bitprepare (&bitchain, sizeof (double));
-  free (bitchain.chain);
+  FREE (bitchain.chain);
   bitchain.chain = (unsigned char *)&value;
   // bit_print (&bitchain, sizeof (double));
 
@@ -493,12 +493,12 @@ static void
 bit_TV_to_utf8_tests (void)
 {
   char *p;
-  char *srcu = strdup ("Test\\U+0234");
+  char *srcu = STRDUP ("Test\\U+0234");
   const char *src1 = "Test\xc4"; // Ä
   const char *src2 = "Test\xc6"; // Ć \U+0106
   const char *src7 = "Test\xd3"; // Σ
   // echo -n "시험" | iconv -f utf8 -t cp949 | od -t x1
-  char *src_kor = strdup ("\xbd\xc3\xc7\xe8");
+  char *src_kor = STRDUP ("\xbd\xc3\xc7\xe8");
 
   ok ("bit_TV_to_utf8_tests init");
   p = bit_TV_to_utf8 ((char *)srcu, CP_ISO_8859_1);
@@ -507,8 +507,8 @@ bit_TV_to_utf8_tests (void)
   else
     fail ("bit_TV_to_utf8 %s ISO_8859_1", p);
   if (p != srcu)
-    free (p);
-  free (srcu);
+    FREE (p);
+  FREE (srcu);
 
   p = bit_TV_to_utf8 ((char *)src1, CP_ISO_8859_1);
   if (strEQc (p, "TestÄ")) // \xc3\x84 as utf-8
@@ -516,7 +516,7 @@ bit_TV_to_utf8_tests (void)
   else
     fail ("bit_TV_to_utf8 %s ISO_8859_1", p);
   if (p != src1)
-    free (p);
+    FREE (p);
 
   p = bit_TV_to_utf8 ((char *)src2, CP_ISO_8859_2);
   if (strEQc (p, "TestĆ"))
@@ -524,7 +524,7 @@ bit_TV_to_utf8_tests (void)
   else
     fail ("bit_TV_to_utf8 %s ISO_8859_2", p);
   if (p != src2)
-    free (p);
+    FREE (p);
 
   p = bit_TV_to_utf8 ((char *)src7, CP_ISO_8859_7);
   if (strEQc (p, "TestΣ"))
@@ -532,7 +532,7 @@ bit_TV_to_utf8_tests (void)
   else
     fail ("bit_TV_to_utf8 %s ISO_8859_7", p);
   if (p != src7)
-    free (p);
+    FREE (p);
 
   p = bit_TV_to_utf8 (src_kor, CP_CP949);
   if
@@ -557,8 +557,8 @@ bit_TV_to_utf8_tests (void)
       printf ("\n");
     }
   if (p != src_kor)
-    free (p);
-  free (src_kor);
+    FREE (p);
+  FREE (src_kor);
 }
 
 static void
@@ -855,7 +855,7 @@ main (int argc, char const *argv[])
   bitchain.opts = 1;
   bitchain.fh = NULL;
   bitchain.version = bitchain.from_version = R_2000;
-  bitchain.chain = (unsigned char *)calloc (bitchain.size, 1);
+  bitchain.chain = (unsigned char *)CALLOC (bitchain.size, 1);
 
   bit_write_RD (&bitchain, 0xBA43B7400);
   if (bitchain.byte == 8 && bitchain.bit == 0)
@@ -1066,7 +1066,7 @@ main (int argc, char const *argv[])
     else
       fail ("bit_read_T => TU @%zu.%u", bitchain.byte, bitchain.bit);
     bit_set_position (&bitchain, pos);
-    free (wstr);
+    FREE (wstr);
 
     bit_write_T (&bitchain, (char *)exp); // convert to ASCII via embed
     if (bitchain.byte == 81 && bitchain.bit == 0)
@@ -1085,7 +1085,7 @@ main (int argc, char const *argv[])
       fail ("bit_read_T => TV \"%s\" @%zu.%u", str, bitchain.byte,
             bitchain.bit);
     bitchain.from_version = bitchain.version = R_2004;
-    free (str);
+    FREE (str);
   }
 
   bit_write_L (&bitchain, 20);
@@ -1127,8 +1127,8 @@ main (int argc, char const *argv[])
       pass ();
     else
       fail ("bit_read_CMC %d (r2000)", color_read.index);
-    free (color_read.name);
-    free (color_read.book_name);
+    FREE (color_read.name);
+    FREE (color_read.book_name);
   }
 
   bit_advance_position (&bitchain, -(long)size);
@@ -1158,8 +1158,8 @@ main (int argc, char const *argv[])
     else
       fail ("bit_read_CMC (%d,%x,%d) %s", color.index, color.rgb, color.flag,
             color.name);
-    free (color.name);
-    free (color.book_name);
+    FREE (color.name);
+    FREE (color.book_name);
   }
 
   bitchain.byte++;
@@ -1215,9 +1215,9 @@ main (int argc, char const *argv[])
       }
     if (!fails)
       pass ();
-    free (s);
+    FREE (s);
   }
 
-  free (bitchain.chain);
+  FREE (bitchain.chain);
   return failed;
 }

@@ -310,7 +310,7 @@ Dwg_Entity_##token **dwg_getall_##token (Dwg_Object_Ref *hdr)                 \
       }                                                                       \
     if (!counts)                                                              \
       return NULL;                                                            \
-    ret_##token = (Dwg_Entity_##token **)malloc (                             \
+    ret_##token = (Dwg_Entity_##token **)MALLOC (                             \
         (counts + 1) * sizeof (Dwg_Entity_##token *));                        \
     obj = get_first_owned_entity (hdr->obj);                                  \
     while (obj)                                                               \
@@ -353,7 +353,7 @@ Dwg_Entity_##token **dwg_getall_##token (Dwg_Object_Ref *hdr)                 \
       }                                                                       \
     if (!counts)                                                              \
       return NULL;                                                            \
-    ret_##token = (Dwg_Object_##token **)malloc (                             \
+    ret_##token = (Dwg_Object_##token **)MALLOC (                             \
         (counts + 1) * sizeof (Dwg_Object_##token *));                        \
     for (c = 0, i = 0; i < dwg->num_objects; i++)                             \
       {                                                                       \
@@ -1302,7 +1302,7 @@ DWG_GETALL_ENTITY_DECL (XYPARAMETERENTITY);
 
 /**
  * \fn Dwg_Object_OBJECT dwg_getall_OBJECT(Dwg_Data *dwg)
- * Extracts all objects of this type from a dwg, and returns a malloced
+ * Extracts all objects of this type from a dwg, and returns a MALLOCed
  * NULL-terminated array.
  */
 

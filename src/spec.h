@@ -18,6 +18,8 @@
 #  include <string.h>
 #  include <limits.h>
 #  include "decode.h"
+#  include "common.h"
+#  include "free.h"
 
 #  define DECODER if (0)
 #  define ENCODER if (0)
@@ -28,7 +30,7 @@
 #  define DXF_OR_FREE if (0)
 #  define DXF if (0)
 #  define JSON if (0)
-#  define FREE if (0)
+#  define ON_FREE if (0)
 #  define IF_FREE_OR_SINCE(x) SINCE (x)
 #  define IF_FREE_OR_VERSIONS(x, y) VERSIONS (x, y)
 #  ifndef IF_ENCODE_FROM_EARLIER
@@ -489,8 +491,8 @@
 #endif
 
 #if defined(IS_FREE)
-#  undef FREE
-#  define FREE if (1)
+#  undef ON_FREE
+#  define ON_FREE if (1)
 #  undef DXF_OR_FREE
 #  define DXF_OR_FREE if (1)
 #  undef IF_IS_FREE
@@ -523,7 +525,7 @@
     VALUE_BINARY (obj->unknown_bits, num_bytes, 0);                           \
   }                                                                           \
   DECODER { dwg_decode_unknown (dat, (Dwg_Object *restrict)obj); }            \
-  FREE { VALUE_TF (obj->unknown_bits, 0); }
+  ON_FREE { VALUE_TF (obj->unknown_bits, 0); }
 
 #if defined IS_JSON
 #  define UNKNOWN_BITS_REST                                                   \
@@ -726,7 +728,7 @@
   _ adds idx
   C does no checks
   N does constant times (else _obj->times)
-  F does not calloc/free
+  F does not CALLOC/free
 */
 
 // unchecked with constant times
